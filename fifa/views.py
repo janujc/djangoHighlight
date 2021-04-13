@@ -6,7 +6,7 @@ from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 
 from fifa.enums import ClubEnum
-from fifa.import_models import ImportClubs, ImportPlayers
+from fifa.import_models import ImportModel
 from fifa.models import Player, Club
 from fifa.serializers import ClubSerializer, PlayerSerializer
 
@@ -28,7 +28,7 @@ class ClubViewSet(viewsets.ModelViewSet):
         except KeyError:
             return Response({'file': 'Missing field'})
 
-        return Response(ImportClubs(file, self.get_serializer_class()).create())
+        return Response(ImportModel(file, self.get_serializer_class()).create())
 
 
 class PlayerViewSet(viewsets.ModelViewSet):
@@ -57,4 +57,4 @@ class PlayerViewSet(viewsets.ModelViewSet):
         except KeyError:
             return Response({'file': 'Missing field'})
 
-        return Response(ImportPlayers(file, self.get_serializer_class()).create())
+        return Response(ImportModel(file, self.get_serializer_class()).create())
