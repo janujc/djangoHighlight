@@ -17,10 +17,10 @@ class PlayerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Player
-        fields = [e.value for e in PlayerEnum]
+        fields = ['pk'] + [e.value for e in PlayerEnum]
 
 
 class ClubSerializer(serializers.ModelSerializer):
     class Meta:
         model = Club
-        fields = [e.value for e in ClubEnum]
+        fields = ['pk'] + [e.value for e in ClubEnum]
