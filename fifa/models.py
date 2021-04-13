@@ -3,13 +3,13 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Club(models.Model):
-    name = models.CharField()
+    name = models.CharField(max_length=100, blank=False, unique=True)
 
 
 class Player(models.Model):
     PREFERRED_FOOT_CHOICES = [
-        ('L', 'Left'),
-        ('R', 'Right'),
+        ('Left', 'Left'),
+        ('Right', 'Right'),
     ]
 
     POSITION_CHOICES = [
@@ -42,21 +42,22 @@ class Player(models.Model):
         ('GK', 'Goalkeeper'),
     ]
 
-    name = models.CharField()
+    name = models.CharField(max_length=100)
     age = models.IntegerField()
-    nationality = models.CharField()
+    nationality = models.CharField(max_length=100)
     overall = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(99)])
     potential = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(99)])
-    club = models.ForeignKey(Club, on_delete=models.DO_NOTHING)
+    club = models.ForeignKey(Club, on_delete=models.DO_NOTHING, related_name='players', null=True)
     value = models.IntegerField()
-    preferred = models.CharField(max_length=1, choices=PREFERRED_FOOT_CHOICES)
+    wage = models.IntegerField()
+    preferred = models.CharField(max_length=5, choices=PREFERRED_FOOT_CHOICES)
     international_reputation = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     weak_foot = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     skill_moves = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     position = models.CharField(max_length=3, choices=POSITION_CHOICES)
     jersey_number = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(99)])
-    joined = models.DateField()
-    loaned_from = models.ForeignKey(Club, on_delete=models.DO_NOTHING)
+    joined = models.DateField(null=True)
+    loaned_from = models.ForeignKey(Club, on_delete=models.DO_NOTHING, related_name='loaned_players', null=True)
     contract_valid_until = models.DateField()
     height = models.IntegerField()
     weight = models.IntegerField()

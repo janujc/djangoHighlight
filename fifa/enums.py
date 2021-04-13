@@ -7,11 +7,13 @@ class AutoName(str, Enum):
 
 
 class ClubEnum(AutoName):
+    PK = auto()
     NAME = auto()
 
 
 class PlayerEnum(AutoName):
-    Name = auto()
+    PK = auto()
+    NAME = auto()
     AGE = auto()
     NATIONALITY = auto()
     OVERALL = auto()
