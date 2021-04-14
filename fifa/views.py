@@ -1,5 +1,6 @@
 import io
 
+from django.db.models import F
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from rest_framework.decorators import action, parser_classes
@@ -10,7 +11,7 @@ from rest_framework.response import Response
 from fifa.enums import ClubEnum, PlayerEnum
 from fifa.import_models import ImportModel
 from fifa.models import Club, Player
-from fifa.serializers import ClubSerializer, PlayerSerializer
+from fifa.serializers import ClubSerializer, PlayerSerializer, ImportPlayerSerializer
 
 
 class ClubViewSet(viewsets.ModelViewSet):
@@ -49,10 +50,22 @@ class PlayerViewSet(viewsets.ModelViewSet):
     ]
     filterset_fields = [PlayerEnum.NAME.value]
     search_fields = [PlayerEnum.NAME.value]
-    ordering_fields = [PlayerEnum.NAME.value]
+    ordering_fields = [PlayerEnum.NAME.value,
+                       PlayerEnum.JOINED.value,
+                       PlayerEnum.CONTRACT_VALID_UNTIL.value]
 
     def get_serializer_class(self):
+        if self.action == 'upload':
+            return ImportPlayerSerializer
         return PlayerSerializer
+
+    # def get_queryset(self):
+    #     expression = F('joined') + F('contract_valid_until')
+    #     return super().get_queryset().annotate(contract_length=expression)
+
+    # @action(['get'], detail=True)
+    # def contract_length(self, request, pk=None):
+    #     return Response
 
     @action(['post'], detail=False)
     @parser_classes([MultiPartParser])
