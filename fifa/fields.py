@@ -1,3 +1,6 @@
+import datetime
+
+from django.utils.dateparse import parse_duration
 from rest_framework import serializers
 from decimal import *
 
@@ -42,3 +45,14 @@ class EuroField(serializers.Field):
                 return digits * Decimal(1000000)
             else:
                 return digits
+
+
+class CustomDurationField(serializers.DurationField):
+    """ DurationField but only returns number of days """
+    def to_representation(self, value):
+        if isinstance(value, datetime.timedelta):
+            return f'{value.days} days'
+        parsed = parse_duration(str(value))
+        if parsed is not None:
+            return f'{parsed.days} days'
+        self.fail('invalid', format='[DD] [HH:[MM:]]ss[.uuuuuu]')
