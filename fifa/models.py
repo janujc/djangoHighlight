@@ -58,6 +58,6 @@ class Player(models.Model):
     jersey_number = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(99)])
     joined = models.DateField(null=True)
     loaned_from = models.ForeignKey(Club, on_delete=models.DO_NOTHING, related_name='loaned_players', null=True)
-    contract_valid_until = models.DateField()
+    contract_valid_until = models.DateField(null=True)
     height = models.IntegerField()
     weight = models.IntegerField()
