@@ -56,8 +56,11 @@ class Player(models.Model):
     skill_moves = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     position = models.CharField(max_length=3, choices=POSITION_CHOICES)
     jersey_number = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(99)])
-    joined = models.DateField(null=True)
+    joined = models.DateTimeField(null=True)
     loaned_from = models.ForeignKey(Club, on_delete=models.DO_NOTHING, related_name='loaned_players', null=True)
-    contract_valid_until = models.DateField(null=True)
+    contract_valid_until = models.DateTimeField(null=True)
     height = models.IntegerField()
     weight = models.IntegerField()
+
+    class Meta:
+        ordering = ['-overall', 'name']
