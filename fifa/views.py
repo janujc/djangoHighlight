@@ -54,6 +54,9 @@ class PlayerViewSet(viewsets.ModelViewSet):
     filterset_fields = [PlayerEnum.NAME.value]
     search_fields = [PlayerEnum.NAME.value]
     ordering_fields = [PlayerEnum.NAME.value,
+                       PlayerEnum.POTENTIAL.value,
+                       PlayerEnum.JERSEY_NUMBER.value,
+                       PlayerEnum.POSITION.value,
                        PlayerEnum.JOINED.value,
                        PlayerEnum.CONTRACT_VALID_UNTIL.value]
 
